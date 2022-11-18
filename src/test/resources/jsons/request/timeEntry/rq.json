@@ -1,8 +1,8 @@
 {
-  "url": "https://api.clockify.me/api/v1",
+  "url": "{{base.url}}",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "{{api-key}}"
   },
-  "endpoint": "/workspaces"
+  "endpoint": "/workspaces/{{wSpace}}/user/{{userId}}/time-entries"
 }
