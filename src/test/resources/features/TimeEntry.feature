@@ -1,19 +1,21 @@
+@TimeEntry
 Feature: Time entry
 
   Background:
     Given Mi cuenta creada en clockify y mi X-Api-Key geneada
     And obtengo mi userId
     And obtengo mi workspace
-  @Nahuel
+
+  @ConsultaExitosa
   Scenario Outline: Consultar horas registradas exitoso
     When I perform a '<operation>' to '<entity>' endpoint with the '<jsonName>' and ''
     And se obtuvo el status code <status>
     Then obtengo las horas registradas
     Examples:
       | operation | entity    | jsonName     | status |
-      | GET       | TIMEENTRY | timeEntry/rq | 200    |
+      | GETS      | TIMEENTRY | timeEntry/rq | 200    |
 
-  @Nahuel
+  @ConsultaErronea
   Scenario Outline: Consultar horas registradas erroneo
     When I perform a '<operation>' to '<entity>' endpoint with the '<jsonName>' and ''
     And se obtuvo el status code <status>
@@ -21,19 +23,20 @@ Feature: Time entry
       | operation | entity | jsonName         | status |
       | GET       | ERROR  | timeEntry/rq_403 | 403    |
 
-#  Scenario Outline: Consultar horas registradas erroneo por user id
-#    When I perform a '<operation>' to '<entity>' endpoint with the '<jsonName>' and ''
-#    And se obtuvo el status code <status>
-#    Then se obtuvo el response esperado en <entity> con el <response>
-#
-#    Examples:
-#      | operation | entity | jsonName         | response         | status |
-#      | GET       | ERROR  | timeEntry/rq_400 | timeEntry/rs_400 | 400    |
-
-  Scenario Outline: Agregar horas a un projecto
+  @Editar
+  Scenario Outline: Editar descripcion de entrada
+    When I perform a 'GET' to 'TIMEENTRY' endpoint with the 'timeEntry/getById/rq' and ''
+    And se obtuvo el status code <status>
+    And se toman los datos de un entry
+    And una descripcion '<desciption>'
     When I perform a '<operation>' to '<entity>' endpoint with the '<jsonName>' and ''
     And se obtuvo el status code <status>
-    Then obtengo las horas registradas
+    Then se valida que la descripcion fue editada '<desciption>'
+
+    When obtengo datos originales
+    When I perform a '<operation>' to '<entity>' endpoint with the '<jsonName>' and ''
+    And se obtuvo el status code <status>
+
     Examples:
-      | operation | entity    | jsonName     | status |
-      | GET       | TIMEENTRY | timeEntry/rq | 200    |
+      | operation | entity    | desciption          | jsonName            | status |
+      | PUT       | TIMEENTRY | Nueva description   | timeEntry/update/rq | 200    |

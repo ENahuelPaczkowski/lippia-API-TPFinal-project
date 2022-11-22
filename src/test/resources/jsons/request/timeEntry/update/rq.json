@@ -1,0 +1,13 @@
+{
+  "url": "{{base.url}}",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Api-Key": "{{api-key}}"
+  },
+  "body": {
+    "start": "{{start}}",
+    "description": "{{desciption}}",
+    "end": "{{end}}"
+  },
+  "endpoint": "/workspaces/{{wSpace}}/time-entries/{{entryId}}"
+}
